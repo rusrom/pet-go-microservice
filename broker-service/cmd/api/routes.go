@@ -20,10 +20,12 @@ func (app *Config) routes() http.Handler {
 		MaxAge:           300,
 	}))
 
-	// health check
+	// Base middleware stack
+	mux.Use(middleware.Logger)
 	mux.Use(middleware.Heartbeat("/ping"))
 
 	mux.Post("/", app.Broker)
+	mux.Get("/", app.Root)
 
 	return mux
 }
