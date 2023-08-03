@@ -11,3 +11,31 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+
+  authentication-service:
+    build:
+      context: ./authentication-service
+    restart: always
+    ports:
+      - "8091:8091"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=db port=5432 user=sparrow password=mysecretpassword dbname=authentication-service sslmode=disable timezone=UTC connect_timeout=5"
+
+
+  db:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: sparrow
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: authentication-service
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
