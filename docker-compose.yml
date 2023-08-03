@@ -4,10 +4,10 @@ services:
   broker-service:
     build:
       context: ./broker-service
-#      dockerfile: ./../broker-service/Dockerfile.broker
+#      dockerfile: ./../broker-service-service/Dockerfile.broker-service
     restart: always
     ports:
-      - "8090:80"
+      - "8090:8090"
     deploy:
       mode: replicated
       replicas: 1
