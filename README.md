@@ -45,3 +45,33 @@ go get github.com/jackc/pgconn
 go get github.com/jackc/pgx/v4
 go get github.com/jackc/pgx/v4/stdlib
 ```
+
+## Populate database
+
+PostgreSQL Sequences  
+https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-sequences/
+
+```sql
+CREATE SEQUENCE IF NOT EXISTS public.user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+CREATE TABLE public.users
+(
+    id          integer DEFAULT nextval('public.user_id_seq'::regclass) NOT NULL,
+    email       character varying(255),
+    first_name  character varying(255),
+    last_name   character varying(255),
+    password    character varying(60),
+    user_active integer DEFAULT 0,
+    created_at  timestamp without time zone,
+    updated_at  timestamp without time zone
+);
+
+INSERT INTO "public"."users"("email", "first_name", "last_name", "password", "user_active", "created_at", "updated_at")
+VALUES ('admin@example.com', 'Admin', 'User', '$2a$12$1zGLuYDDNvATh4RA4avbKuheAMpb1svexSzrQm7up.bnpwQHs0jN', 1, '2022-03-14 00:00:00', '2022-03-14 00:00:00');
+```
